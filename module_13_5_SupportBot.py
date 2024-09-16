@@ -1,11 +1,16 @@
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher.filters.state import State, StatesGroup
+from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 
-api = '_______'
+api = '7318149436:AAGsSUVCDgZhtmeaAEPHaoSxhZDaYpYoO_U'
 bot = Bot(token=api)
 dp = Dispatcher(bot, storage=MemoryStorage())
-
+kb = ReplyKeyboardMarkup(resize_keyboard=True)
+button1 = KeyboardButton(text='Рассчитать')
+button2 = KeyboardButton(text='Информация')
+kb.add(button1)
+kb.add(button2)
 
 class UserState(StatesGroup):
     age = State()
@@ -15,13 +20,8 @@ class UserState(StatesGroup):
 
 @dp.message_handler(commands=['start'])
 async def start(message):
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    button_calculate = types.KeyboardButton('Рассчитать')
-    button_info = types.KeyboardButton('Информация')
-    keyboard.add(button_calculate, button_info)
-
     await message.reply('Привет! Я бот помогающий твоему здоровью.\nВыберите, что Вы хотите сделать:\n',
-                        reply_markup=keyboard)
+                        reply_markup=kb)
 
 
 @dp.message_handler(text='Рассчитать', state='*')
